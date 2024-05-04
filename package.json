@@ -1,0 +1,26 @@
+{
+  "name": "magical-arena",
+  "version": "1.0.0",
+  "description": "magical arena game simulation source code",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node -r tsconfig-paths/register -r ts-node/register ./src/index.ts",
+    "start:dev": "npx nodemon",
+    "build": "rimraf ./build && tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "node": "^22.1.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "jest": "^29.7.0",
+    "mongosh": "^2.2.5",
+    "nodemon": "^3.1.0",
+    "rimraf": "^5.0.5",
+    "tsc": "^2.0.4"
+  }
+}
