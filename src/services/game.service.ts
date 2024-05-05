@@ -20,7 +20,10 @@ export class GameService {
       throw new Error('One or both players not found');
     }
 
+    let swap = false;
+
     if(player1.health > player2.health) {
+      swap = true;
       const tempPlayer = player1;
       player1 = player2;
       player2 = tempPlayer;
@@ -33,11 +36,17 @@ export class GameService {
       this.performAttack(player2, player1);
     }
 
+    if(swap) {
+      const tempPlayer = player1;
+      player1 = player2;
+      player2 = tempPlayer;
+    }
+
     return {
       winner: player1.health > 0 ? player1.id : player2.id,
       details: {
-        player1: { health: player1.health },
-        player2: { health: player2.health }
+        player1: { id: player1.id, health: player1.health },
+        player2: { id: player2.id, health: player2.health }
       }
     };
   }
