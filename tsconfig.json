@@ -21,7 +21,7 @@
     "resolveJsonModule": true                     // Include modules imported with '.json' extensions
   },
   "include": [
-    "src/**/*"                                   // Include all files in the src folder
+    "src/**/*"                                    // Include all files in the src folder
   ],
   "exclude": [
     "node_modules",                              // Exclude the node_modules directory
