@@ -1,19 +1,38 @@
 import { Request, Response } from 'express';
 import { GameService } from '../services/game.service';
+import { PlayerDTO } from '../models/player.model';
+import { validate, ValidationError } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
 
 export class GameController {
     constructor(private gameService: GameService) {}
 
-    createPlayer = async (req: Request, res: Response): Promise<void> => {
+    fight = async (req: Request, res: Response): Promise<void> => {
+        const { player1Id, player2Id } = req.params;
         try {
-            const player = await this.gameService.createPlayer(req.body);
+            const result = await this.gameService.fight(player1Id, player2Id);
+            res.status(200).json(result);
+        } catch (error) {
+            res.status(500).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
+        }
+    }
+
+    createPlayer = async (req: Request, res: Response) => {
+        const playerData = plainToInstance(PlayerDTO, req.body);
+        const validationErrors: ValidationError[] = await validate(playerData);
+
+        if (validationErrors.length > 0) {
+            const messages = validationErrors.map(error => {
+                return { property: error.property, errors: Object.values(error.constraints ?? {}) };
+            });
+            return res.status(400).json(messages);
+        }
+
+        try {
+            const player = await this.gameService.createPlayer(playerData[0]);
             res.status(201).json(player);
         } catch (error) {
-            if (error instanceof Error) {
-                res.status(400).json({ message: error.message });
-            } else {
-                res.status(400).json({ message: 'Failed to create player due to an unknown error' });
-            }
+            res.status(500).json({ message: error instanceof Error ? error.message : 'Failed to create player due to an unknown error' });
         }
     }
 
@@ -27,11 +46,7 @@ export class GameController {
                 res.status(404).json({ message: 'Player not found' });
             }
         } catch (error) {
-            if (error instanceof Error) {
-                res.status(500).json({ message: error.message });
-            } else {
-                res.status(500).json({ message: 'An unknown error occurred' });
-            }
+            res.status(500).json({ message: error instanceof Error ? error.message : 'An unknown error occurred' });
         }
     }
 }

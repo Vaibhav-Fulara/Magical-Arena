@@ -8,6 +8,7 @@ export const gameRoutes = (router: Router) => {
     const gameService = new GameService(playerAccessor);
     const gameController = new GameController(gameService);
 
+    router.post('/fight/:player1Id/:player2Id', gameController.fight.bind(gameController));
     router.post('/players', gameController.createPlayer.bind(gameController));
     router.get('/players/:playerId', gameController.getPlayer.bind(gameController));
 }

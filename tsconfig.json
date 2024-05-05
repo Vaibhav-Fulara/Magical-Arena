@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
     /* Basic Options */
-    "target": "es2020",                           // Specify ECMAScript target version
+    "target": "ES5",                              // Specify ECMAScript target version
     "module": "commonjs",                         // Specify module code generation
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "lib": ["es2020"],                            // Specify library files to be included in the compilation
     "outDir": "./build",                           // Redirect output structure to the directory
     "rootDir": "./src",                           // Specify the root directory of input files
