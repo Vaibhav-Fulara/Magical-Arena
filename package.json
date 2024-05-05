@@ -2,7 +2,7 @@
   "name": "magical-arena",
   "version": "1.0.0",
   "description": "magical arena game simulation source code",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "jest",
     "start": "node -r tsconfig-paths/register -r ts-node/register ./src/index.ts",
