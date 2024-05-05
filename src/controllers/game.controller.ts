@@ -29,7 +29,7 @@ export class GameController {
         }
 
         try {
-            const player = await this.gameService.createPlayer(playerData[0]);
+            const player = await this.gameService.createPlayer(playerData as unknown as PlayerDTO);
             res.status(201).json(player);
         } catch (error) {
             res.status(500).json({ message: error instanceof Error ? error.message : 'Failed to create player due to an unknown error' });
@@ -37,7 +37,7 @@ export class GameController {
     }
 
     getPlayer = async (req: Request, res: Response): Promise<void> => {
-        const { playerId } = req.params;
+        const playerId = req.params.playerId;
         try {
             const player = await this.gameService.getPlayer(playerId);
             if (player) {

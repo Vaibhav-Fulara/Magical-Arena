@@ -13,13 +13,19 @@ export class GameService {
   }
 
   async fight(player1Id: string, player2Id: string): Promise<any> {
-    const player1 = await this.playerAccessor.findPlayerById(player1Id);
-    const player2 = await this.playerAccessor.findPlayerById(player2Id);
+    let player1 = await this.playerAccessor.findPlayerById(player1Id);
+    let player2 = await this.playerAccessor.findPlayerById(player2Id);
 
     if (!player1 || !player2) {
       throw new Error('One or both players not found');
     }
 
+    if(player1.health > player2.health) {
+      const tempPlayer = player1;
+      player1 = player2;
+      player2 = tempPlayer;
+    }
+    
     // Assuming a simplistic turn-based fight logic
     while (player1.health > 0 && player2.health > 0) {
       this.performAttack(player1, player2);
@@ -43,5 +49,6 @@ export class GameService {
     const defenseValue = defender.strength * defenseRoll;
     const damage = Math.max(0, attackValue - defenseValue);
     defender.health -= damage;
+    defender.health = Math.max(defender.health, 0); // Making the loser's health positive in case of negative result
   }
 }
